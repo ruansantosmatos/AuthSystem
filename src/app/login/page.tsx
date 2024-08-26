@@ -4,18 +4,24 @@ import Link from "next/link"
 import Swal from 'sweetalert2'
 import 'sweetalert2/src/sweetalert2.scss'
 import { useState } from "react"
-import { fieldsLogin, ILogin, ISessionData } from "@/types/login"
+import { CredentialResponse, GoogleOAuthProvider } from '@react-oauth/google';
+import { GoogleLogin } from '@react-oauth/google';
+import { fieldsLogin, ILogin, IOAuthGoogle, ISessionData } from "@/types/login"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { ServicesUsuarios } from "@/api/usuarios"
+import { jwtDecode } from 'jwt-decode'
+import { useRouter } from 'next/navigation'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
 export default function Login() {
     const [email, setEmail] = useState<string>('')
     const [password, setPassword] = useState<string>('')
     const [alertMessageEmail, setAlertMessageEmail] = useState<string>('')
     const [alertMessagePassword, setAlertMessagePassword] = useState<string>('')
+    const router = useRouter()
+    const CLIENT_ID_GOOGLE = process.env.NEXT_PUBLIC_CLIENTID as string
 
     function onChangeEmail(email: string) {
         setEmail(email)
@@ -25,20 +31,21 @@ export default function Login() {
         setPassword(password)
     }
 
-    function alertInvalidEmail(message: string, display: string) {
-        const alert = document.getElementById('alert-email')
+    function alertInvalidFields(message: string, display: string, type: 'email' | 'password') {
+        const alert = document.getElementById(`alert-${type}`)
         if (alert == undefined) { return }
 
-        setAlertMessageEmail(message)
-        alert.style.display = display
-    }
+        switch (type) {
+            case 'email':
+                setAlertMessageEmail(message)
+                alert.style.display = display
+                break;
 
-    function alertInvalidPassword(message: string, display: string) {
-        const alert = document.getElementById('alert-password')
-        if (alert == undefined) { return }
-
-        setAlertMessagePassword(message)
-        alert.style.display = display
+            case 'password':
+                setAlertMessagePassword(message)
+                alert.style.display = display
+                break;
+        }
     }
 
     function validationFilds() {
@@ -63,43 +70,66 @@ export default function Login() {
 
                 switch (erro.path) {
                     case fieldsLogin.email:
-                        alertInvalidEmail(erro.message, 'block')
+                        alertInvalidFields(erro.message, 'block', 'email')
                         break;
 
                     case fieldsLogin.password:
-                        alertInvalidPassword(erro.message, 'block')
+                        alertInvalidFields(erro.message, 'block', 'password')
                         break;
                 }
             })
         }
     }
 
-    function disableBtnLogin() {
+    function disableEnableBtns(active: boolean) {
         const btnLogin = document.getElementById('btn-login')
         if (btnLogin == undefined) { return }
-
-        btnLogin.setAttribute('disabled', '')
-        setTimeout(() => { btnLogin.removeAttribute('disabled') }, 1000)
-    }
-
-    function enableBtnLogin() {
-        const btnLogin = document.getElementById('btn-login')
-        if (btnLogin == undefined) { return }
-        btnLogin.removeAttribute('disabled')
+        active ? btnLogin.setAttribute('disabled', '') : btnLogin.removeAttribute('disabled')
     }
 
     async function signIn() {
         try {
-            disableBtnLogin()
+            disableEnableBtns(true)
             const request = await ServicesUsuarios.session({ 'email': email, 'senha': password }) as ISessionData
             const token = request.session.token
-            console.log('Token', token)
+
+            localStorage.setItem('token', token)
+            setTimeout(() => { disableEnableBtns(false) }, 1500)
+            router.push('/')
+
         }
         catch (error) {
-            setTimeout(() => { enableBtnLogin() }, 1500)
+            setTimeout(() => { disableEnableBtns(false) }, 1500)
             const message = error as { response: string }
             Swal.fire({ icon: 'error', title: 'Oops...', text: `${message.response}` })
         }
+    }
+
+    async function oAuthLogin(credentialGoogle: CredentialResponse) {
+        try {
+            disableEnableBtns(true)
+            const details = jwtDecode(credentialGoogle.credential as string) as IOAuthGoogle
+            const data = { 'id_conta': details.sub, 'nome': details.name, 'email': details.email }
+
+            const request = await ServicesUsuarios.sessionOAuth(data) as ISessionData
+            const token = request.session.token
+
+            localStorage.setItem('token', token)
+            setTimeout(() => { disableEnableBtns(false) }, 1000)
+            router.push('/')
+        }
+        catch (error) {
+            setTimeout(() => { disableEnableBtns(false) }, 1500)
+            Swal.fire({ icon: 'error', title: 'Oops, houve um erro..' })
+        }
+    }
+
+    function failedOauth() {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'falha no processo de autenticação..'
+        })
     }
 
     return (
@@ -108,7 +138,7 @@ export default function Login() {
                 <CardHeader>
                     <CardTitle className="text-2xl">Login</CardTitle>
                     <CardDescription>
-                        Enter your email below to login to your account
+                        Insira seu e-mail e senha abaixo para fazer login em sua conta
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -121,20 +151,20 @@ export default function Login() {
                                 placeholder="m@example.com"
                                 required
                                 onChange={(e) => onChangeEmail(e.target.value)}
-                                onFocus={() => alertInvalidEmail('', 'hidden')}
+                                onFocus={() => alertInvalidFields('', 'hidden', 'email')}
                             />
                             <p id="alert-email" className="hidden text-red-600 text-sm">
                                 {alertMessageEmail}
                             </p>
                         </div>
                         <div className="grid gap-2">
-                            <Label htmlFor="password">Password</Label>
+                            <Label htmlFor="password">Senha</Label>
                             <Input
                                 id="password"
                                 type="password"
                                 required
                                 onChange={(e) => onChangePassword(e.target.value)}
-                                onFocus={() => alertInvalidPassword('', 'hidden')}
+                                onFocus={() => alertInvalidFields('', 'hidden', 'password')}
                             />
                             <p id="alert-password" className="hidden text-red-600 text-sm">
                                 {alertMessagePassword}
@@ -142,7 +172,7 @@ export default function Login() {
                         </div>
                         <div className="flex justify-end">
                             <Link href="#" target='_blank' className="inline-block text-sm underline">
-                                Forgot password?
+                                Esqueceu a senha?
                             </Link>
                         </div>
                         <Button
@@ -153,18 +183,18 @@ export default function Login() {
                         >
                             Login
                         </Button>
-                        <Button 
-                            id='btn-oauth'
-                            variant="outline" 
-                            className="w-full disabled:opacity-50"
-                        >
-                            Login with Google
-                        </Button>
+                        <GoogleOAuthProvider clientId={CLIENT_ID_GOOGLE}>
+                            <GoogleLogin
+                                width={330}
+                                onSuccess={credentialResponse => oAuthLogin(credentialResponse)}
+                                onError={() => failedOauth()}
+                            />
+                        </GoogleOAuthProvider>
                     </div>
                     <div className="mt-4 text-center text-sm">
-                        Don&apos;t have an account?{" "}
+                        Não possui conta?{" "}
                         <Link href="/sing-up" target='_self' className="underline">
-                            Sign up
+                            criar conta
                         </Link>
                     </div>
                 </CardContent>

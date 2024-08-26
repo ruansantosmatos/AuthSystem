@@ -15,3 +15,9 @@ export interface ISessionData {
     }
 }
 
+export interface IOAuthGoogle {
+    sub: string
+    name: string
+    email: string,
+}
+

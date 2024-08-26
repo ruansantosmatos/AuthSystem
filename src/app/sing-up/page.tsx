@@ -1,12 +1,16 @@
 'use client'
 import * as yup from 'yup'
 import Link from "next/link"
+import Swal from 'sweetalert2'
+import 'sweetalert2/src/sweetalert2.scss'
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { fieldSingUp, ISingUp } from '@/types/sing-up'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { ServicesUsuarios } from '@/api/usuarios'
+import { IUsuarios } from '@/api/models/usuarios'
 
 export default function SingUp() {
     const [firstName, setFirstName] = useState<string>('')
@@ -33,28 +37,41 @@ export default function SingUp() {
         setPassword(password)
     }
 
-    function alertInvalidName(message: string, display: string) {
-        const alert = document.getElementById('alert-name')
+    function alertInvalidFields(message: string, display: string, type: 'name' | 'password' | 'email') {
+        const alert = document.getElementById(`alert-${type}`)
         if (alert == undefined) { return }
 
-        setAlertMessageName(message)
-        alert.style.display = display
+        switch (type) {
+            case 'name':
+                setAlertMessageName(message)
+                alert.style.display = display
+                break;
+
+            case 'email':
+                setAlertMessageEmail(message)
+                alert.style.display = display
+                break;
+
+            case 'password':
+                setAlertMessagePassword(message)
+                alert.style.display = display
+                break;
+        }
     }
 
-    function alertInvalidEmail(message: string, display: string) {
-        const alert = document.getElementById('alert-email')
-        if (alert == undefined) { return }
+    function disableEnableBtns(active: boolean) {
+        const btnCreate = document.getElementById('btn-create')
+        const btnOauth = document.getElementById('btn-oauth')
+        if (btnCreate == undefined || btnOauth == undefined) { return }
 
-        setAlertMessageEmail(message)
-        alert.style.display = display
-    }
-
-    function alertInvalidPassword(message: string, display: string) {
-        const alert = document.getElementById('alert-password')
-        if (alert == undefined) { return }
-
-        setAlertMessagePassword(message)
-        alert.style.display = display
+        if (active) {
+            btnCreate.setAttribute('disabled', '')
+            btnOauth.setAttribute('disabled', '')
+        }
+        else {
+            btnCreate.removeAttribute('disabled')
+            btnOauth.removeAttribute('disabled')
+        }
     }
 
     function validationFilds() {
@@ -69,7 +86,7 @@ export default function SingUp() {
             )
 
             schema.validateSync({ firstName, lastName, email, password }, { abortEarly: false })
-            schema.type == 'object' && console.log('AIII NOBRU APELÃO')
+            schema.type == 'object' && createAccount()
         }
         catch (error) {
             const yupErro = error as yup.ValidationError
@@ -81,22 +98,41 @@ export default function SingUp() {
 
                 switch (erro.path) {
                     case fieldSingUp.firstName:
-                        alertInvalidName(`first name too short`, 'block')
+                        alertInvalidFields(`first name too short`, 'block', 'name')
                         break;
 
                     case fieldSingUp.lastName:
-                        alertInvalidName('last name too short', 'block')
+                        alertInvalidFields('last name too short', 'block', 'name')
                         break;
 
                     case fieldSingUp.email:
-                        alertInvalidEmail(erro.message, 'block')
+                        alertInvalidFields(erro.message, 'block', 'email')
                         break;
 
                     case fieldSingUp.password:
-                        alertInvalidPassword(erro.message, 'block')
+                        alertInvalidFields(erro.message, 'block', 'password')
                         break;
                 }
             })
+        }
+    }
+
+    async function createAccount() {
+        try {
+            disableEnableBtns(true)
+            const name = `${firstName} ${lastName}`
+            const emailUser = email
+            const passwordUser = password
+
+            const data: Omit<IUsuarios, 'id'> = { 'nome': name, 'email': emailUser, 'senha': passwordUser }
+            const id = await ServicesUsuarios.create(data) as number
+            setTimeout(() => { disableEnableBtns(false) }, 1200)
+            console.log('id cadastrado paiii', id)
+        }
+        catch (error) {
+            const message = error as { response: string }
+            Swal.fire({ icon: 'error', title: 'Atenção', text: `${message.response}` })
+            setTimeout(() => { disableEnableBtns(false) }, 1200)
         }
     }
 
@@ -104,33 +140,33 @@ export default function SingUp() {
         <section className="w-svw h-svh flex justify-center items-center">
             <Card className="mx-auto max-w-sm">
                 <CardHeader>
-                    <CardTitle className="text-xl">Sign Up</CardTitle>
+                    <CardTitle className="text-xl">Cadastre-se</CardTitle>
                     <CardDescription>
-                        Enter your information to create an account
+                        Insira suas informações para criar uma conta
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
                     <div className="grid gap-4">
                         <div className="grid grid-cols-2 gap-4">
                             <div className="grid gap-2">
-                                <Label htmlFor="first-name">First name</Label>
+                                <Label htmlFor="first-name">Nome</Label>
                                 <Input
                                     id="first-name"
                                     placeholder="Max"
                                     pattern=''
                                     required
                                     onChange={(e) => onChangeFirstName(e.target.value)}
-                                    onFocus={() => alertInvalidName('', 'hidden')}
+                                    onFocus={() => alertInvalidFields('', 'hidden', 'name')}
                                 />
                             </div>
                             <div className="grid gap-2">
-                                <Label htmlFor="last-name">Last name</Label>
+                                <Label htmlFor="last-name">Sobrenome</Label>
                                 <Input
                                     id="last-name"
                                     placeholder="Robinson"
                                     required
                                     onChange={(e) => onChangeLastName(e.target.value)}
-                                    onFocus={() => alertInvalidName('', 'hidden')}
+                                    onFocus={() => alertInvalidFields('', 'hidden', 'name')}
                                 />
                             </div>
                         </div>
@@ -145,35 +181,44 @@ export default function SingUp() {
                                 placeholder="m@example.com"
                                 required
                                 onChange={(e) => onChangeEmail(e.target.value)}
-                                onFocus={() => alertInvalidEmail('', 'hidden')}
+                                onFocus={() => alertInvalidFields('', 'hidden', 'email')}
                             />
                             <p id="alert-email" className="hidden text-red-600 text-sm">
                                 {alertMessageEmail}
                             </p>
                         </div>
                         <div className="grid gap-2">
-                            <Label htmlFor="password">Password</Label>
+                            <Label htmlFor="password">Senha</Label>
                             <Input
                                 id="password"
                                 type="password"
                                 onChange={(e) => onChangePassword(e.target.value)}
-                                onFocus={() => alertInvalidPassword('', 'hidden')}
+                                onFocus={() => alertInvalidFields('', 'hidden', 'password')}
                             />
                             <p id="alert-password" className="hidden text-red-600 text-sm">
                                 {alertMessagePassword}
                             </p>
                         </div>
-                        <Button onClick={() => validationFilds()} type="submit" className="w-full">
-                            Create an account
+                        <Button
+                            type='submit'
+                            id='btn-create'
+                            className="w-full"
+                            onClick={() => validationFilds()}
+                        >
+                            Criar conta
                         </Button>
-                        <Button variant="outline" className="w-full">
+                        <Button
+                            id='btn-oauth'
+                            variant="outline"
+                            className="w-full"
+                        >
                             Sign up with Google
                         </Button>
                     </div>
                     <div className="mt-4 text-center text-sm">
-                        Already have an account?{" "}
+                        Já possui uma conta?{" "}
                         <Link href="/login" className="underline">
-                            Sign in
+                            Entrar
                         </Link>
                     </div>
                 </CardContent>

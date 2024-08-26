@@ -1,10 +1,9 @@
 import { AxiosError } from "axios";
 import { api } from "../config";
-import { IUsuarios } from "../models/usuarios";
 
-export const create = async (info: Omit<IUsuarios, 'id'>): Promise<number | Error> => {
+export const sessionOAuth = async (info: { 'id_conta': string, 'nome': string, 'email': string }): Promise<object | Error> => {
     try {
-        const request = (await api.post('/user', info)).data as number
+        const request = (await api.post('/session/oauth', info)).data
         return request
     }
     catch (error) {
