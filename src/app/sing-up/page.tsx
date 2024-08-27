@@ -11,6 +11,11 @@ import { fieldSingUp, ISingUp } from '@/types/sing-up'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { ServicesUsuarios } from '@/api/usuarios'
 import { IUsuarios } from '@/api/models/usuarios'
+import { CredentialResponse, GoogleOAuthProvider } from '@react-oauth/google';
+import { GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from 'jwt-decode'
+import { IOAuthGoogle } from '@/types/login'
+import { useRouter } from 'next/navigation'
 
 export default function SingUp() {
     const [firstName, setFirstName] = useState<string>('')
@@ -20,6 +25,8 @@ export default function SingUp() {
     const [alertMessageName, setAlertMessageName] = useState<string>('')
     const [alertMessageEmail, setAlertMessageEmail] = useState<string>('')
     const [alertMessagePassword, setAlertMessagePassword] = useState<string>('')
+    const router = useRouter()
+    const CLIENT_ID_GOOGLE = process.env.NEXT_PUBLIC_CLIENTID as string
 
     function onChangeFirstName(first: string) {
         setFirstName(first)
@@ -128,12 +135,38 @@ export default function SingUp() {
             const id = await ServicesUsuarios.create(data) as number
             setTimeout(() => { disableEnableBtns(false) }, 1200)
             console.log('id cadastrado paiii', id)
+            router.push('/')
         }
         catch (error) {
             const message = error as { response: string }
             Swal.fire({ icon: 'error', title: 'Atenção', text: `${message.response}` })
             setTimeout(() => { disableEnableBtns(false) }, 1200)
         }
+    }
+
+    async function oAuthLogin(credentialGoogle: CredentialResponse) {
+        try {
+            disableEnableBtns(true)
+            const details = jwtDecode(credentialGoogle.credential as string) as IOAuthGoogle
+            const data: Omit<IUsuarios, 'id'> = { 'nome': details.name, 'email': details.email, 'senha': details.sub }
+
+            const id = await ServicesUsuarios.create(data) as number
+            setTimeout(() => { disableEnableBtns(false) }, 1000)
+            router.push('/')
+        }
+        catch (error) {
+            const message = error as { response: string }
+            setTimeout(() => { disableEnableBtns(false) }, 1500)
+            Swal.fire({ icon: 'error', title: 'Atenção', text: `${message.response}` })
+        }
+    }
+
+    function failedOauth() {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'falha no processo de autenticação..'
+        })
     }
 
     return (
@@ -207,17 +240,18 @@ export default function SingUp() {
                         >
                             Criar conta
                         </Button>
-                        <Button
-                            id='btn-oauth'
-                            variant="outline"
-                            className="w-full"
-                        >
-                            Sign up with Google
-                        </Button>
+                        <GoogleOAuthProvider clientId={CLIENT_ID_GOOGLE}>
+                            <GoogleLogin
+                                width={330}
+                                text='signup_with'
+                                onSuccess={credentialResponse => oAuthLogin(credentialResponse)}
+                                onError={() => failedOauth()}
+                            />
+                        </GoogleOAuthProvider>
                     </div>
                     <div className="mt-4 text-center text-sm">
                         Já possui uma conta?{" "}
-                        <Link href="/login" className="underline">
+                        <Link href="/" className="underline">
                             Entrar
                         </Link>
                     </div>
