@@ -1,10 +1,9 @@
 import { AxiosError } from "axios";
 import { api } from "../config";
-import { IUsuarios } from "../models/usuarios";
 
-export const create = async (info: Omit<IUsuarios, 'id'>): Promise<object | Error> => {
+export const encrypt = async (info: { data: { } }, token: string): Promise<object | Error> => {
     try {
-        const request = (await api.post('/user', info)).data
+        const request = (await api.post('/encrypt', info, { headers: { Authorization: `Bearer ${token}` } })).data
         return request
     }
     catch (error) {

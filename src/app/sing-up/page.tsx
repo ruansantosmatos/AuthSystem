@@ -7,7 +7,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { fieldSingUp, ISingUp } from '@/types/sing-up'
+import { fieldSingUp, IResponseCreateUser, ISingUp } from '@/types/sing-up'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { ServicesUsuarios } from '@/api/usuarios'
 import { IUsuarios } from '@/api/models/usuarios'
@@ -16,6 +16,7 @@ import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from 'jwt-decode'
 import { IOAuthGoogle } from '@/types/login'
 import { useRouter } from 'next/navigation'
+import * as crypto from 'crypto'
 
 export default function SingUp() {
     const [firstName, setFirstName] = useState<string>('')
@@ -132,10 +133,18 @@ export default function SingUp() {
             const passwordUser = password
 
             const data: Omit<IUsuarios, 'id'> = { 'nome': name, 'email': emailUser, 'senha': passwordUser }
-            const id = await ServicesUsuarios.create(data) as number
+            const info = await ServicesUsuarios.create(data) as IResponseCreateUser
+
+            console.log('AAA', info)
+            
+            const props = { 'id': info.id, 'id_otp': info.id_otp, 'email': email, 'token': info.token }
+            const crypt = await ServicesUsuarios.encrypt({ 'data': props }, info.token) as { data: string }
+
+            sessionStorage.setItem('data_user', JSON.stringify(crypt.data))
+            sessionStorage.setItem('token', JSON.stringify(info.token))
+
             setTimeout(() => { disableEnableBtns(false) }, 1200)
-            console.log('id cadastrado paiii', id)
-            router.push('/')
+            router.push(`/otp`)
         }
         catch (error) {
             const message = error as { response: string }
@@ -150,9 +159,15 @@ export default function SingUp() {
             const details = jwtDecode(credentialGoogle.credential as string) as IOAuthGoogle
             const data: Omit<IUsuarios, 'id'> = { 'nome': details.name, 'email': details.email, 'senha': details.sub }
 
-            const id = await ServicesUsuarios.create(data) as number
-            setTimeout(() => { disableEnableBtns(false) }, 1000)
-            router.push('/')
+            const info = await ServicesUsuarios.create(data) as IResponseCreateUser
+            const props = { 'id': info.id, 'id_otp': info.id_otp, 'email': info.email, 'token': info.token }
+            const crypt = await ServicesUsuarios.encrypt({ 'data': props }, info.token) as { data: string }
+
+            sessionStorage.setItem('data_user', JSON.stringify(crypt.data))
+            sessionStorage.setItem('token', JSON.stringify(info.token))
+            
+            setTimeout(() => { disableEnableBtns(false) }, 1200)
+            router.push(`/otp`)
         }
         catch (error) {
             const message = error as { response: string }
