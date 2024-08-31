@@ -48,7 +48,8 @@ export default function Otp() {
             acessToken = decriptData.data.token
         }
         catch (error) {
-            console.log('error')
+            const message = 'Houve uma falha no carregamento das informações.'
+            Swal.fire({ icon: 'success', title: 'Atenção!', text: message, didClose: () => redirectScreen() })
         }
     }
 
