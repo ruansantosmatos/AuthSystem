@@ -172,7 +172,7 @@ export default function Home() {
                 </p>
               </div>
               <div className="flex justify-end">
-                <Link href="#" target='_blank' className="inline-block text-sm underline">
+                <Link href="/forgot" target='_self' className="inline-block text-sm underline">
                   Esqueceu a senha?
                 </Link>
               </div>
