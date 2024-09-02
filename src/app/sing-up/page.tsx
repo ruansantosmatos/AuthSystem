@@ -186,7 +186,7 @@ export default function SingUp() {
 
     return (
         <section className="w-svw h-svh flex justify-center items-center">
-            <Card className="mx-auto max-w-sm">
+            <Card className="max-w-sm">
                 <CardHeader>
                     <CardTitle className="text-xl">Cadastre-se</CardTitle>
                     <CardDescription>

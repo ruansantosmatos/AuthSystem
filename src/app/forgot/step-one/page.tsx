@@ -11,8 +11,12 @@ import imgSecury from '../../../../public/security.png'
 export default function StepOne() {
     const route = useRouter()
     const searchParams = useSearchParams()
+    const id = parseInt(searchParams.get('id') as string)
 
-    useEffect(() => { AuthScreen() }, [])
+    const id_user = parseInt(searchParams.get('user') as string)
+    const token = searchParams.get('token') as string
+
+    useEffect(() => { AuthScreen() }, [id, id_user, token])
 
     function redirectScreen(path: string) {
         route.push(path)
@@ -24,23 +28,17 @@ export default function StepOne() {
 
     async function authToken() {
         try {
-            const id = parseInt(searchParams.get('id') as string)
-
-            const token = searchParams.get('token') as string
             await ServicesSenhas.update({ 'id': id }, token)
         }
         catch (error) {
-            const message = 'Houve uma falha no processo de autenticação'
+            const message = 'Houve uma falha no processo de autenticação..'
             alert(message, () => redirectScreen('/'))
         }
     }
 
     function AuthScreen() {
-        const id = parseInt(searchParams.get('id') as string)
-        const token = searchParams.get('token') as string
-        const message = 'Por questões de segurança da informação, estamos redirecionando você!'
-
-        if (id == undefined || token == undefined) { alert(message, () => redirectScreen('/')) }
+        const message = 'Por questões de segurança, estamos redirecionando você!'
+        if (id == undefined || token == undefined || id_user == undefined) { alert(message, () => redirectScreen('/')) }
         else { authToken() }
     }
 
@@ -58,7 +56,7 @@ export default function StepOne() {
                     </p>
                 </div>
                 <div className="w-full h-20 flex flex-col justify-center items-center">
-                    <Button id='btn-redirect' onClick={() => console.log('aaaa')} className="w-3/4 text-white">
+                    <Button id='btn-redirect' onClick={() => redirectScreen(`/forgot/step-two?user=${id_user}&token=${token}`)} className="w-3/4 text-white">
                         Continuar
                     </Button>
                 </div>

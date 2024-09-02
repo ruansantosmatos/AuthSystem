@@ -95,7 +95,8 @@ export default function Home() {
 
       localStorage.setItem('token', token)
       setTimeout(() => { disableEnableBtns(false) }, 1500)
-      router.push('/')
+      alert('Parabéns tu fez login filho de cabra safado')
+      // router.push('/')
 
     }
     catch (error) {
