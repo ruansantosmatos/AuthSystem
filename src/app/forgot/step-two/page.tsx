@@ -1,7 +1,7 @@
 'use client'
 import Swal from 'sweetalert2'
 import 'sweetalert2/src/sweetalert2.scss'
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -67,7 +67,6 @@ export default function StepTwo() {
             }
         })
         enableDisableBtn()
-        console.log('senha', newPassword)
     }
 
     function enableDisableBtn() {

@@ -1,4 +1,5 @@
 'use client'
+import '../../services/TranslationYup'
 import * as yup from 'yup'
 import Link from "next/link"
 import Swal from 'sweetalert2'
@@ -16,7 +17,6 @@ import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from 'jwt-decode'
 import { IOAuthGoogle } from '@/types/login'
 import { useRouter } from 'next/navigation'
-import * as crypto from 'crypto'
 
 export default function SingUp() {
     const [firstName, setFirstName] = useState<string>('')
@@ -134,8 +134,6 @@ export default function SingUp() {
 
             const data: Omit<IUsuarios, 'id'> = { 'nome': name, 'email': emailUser, 'senha': passwordUser }
             const info = await ServicesUsuarios.create(data) as IResponseCreateUser
-
-            console.log('AAA', info)
             
             const props = { 'id': info.id, 'id_otp': info.id_otp, 'email': email, 'token': info.token }
             const crypt = await ServicesUsuarios.encrypt({ 'data': props }, info.token) as { data: string }

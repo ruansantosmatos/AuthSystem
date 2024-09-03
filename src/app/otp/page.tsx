@@ -1,5 +1,6 @@
 'use client'
 import * as yup from 'yup'
+import '../../services/TranslationYup'
 import Swal from 'sweetalert2'
 import 'sweetalert2/src/sweetalert2.scss'
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp"
@@ -95,7 +96,7 @@ export default function Otp() {
             const message = 'Verificação de conta realizada com sucesso!'
 
             await ServicesOtp.update(data, token)
-            Swal.fire({ icon: 'success', title: 'Atenção!', text: message, didClose: () => redirectScreen() })
+            Swal.fire({ icon: 'success', text: message, didClose: () => redirectScreen() })
         }
         catch (error) {
             const message = error as { response: string }

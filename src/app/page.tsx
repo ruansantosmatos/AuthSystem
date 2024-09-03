@@ -1,4 +1,5 @@
 'use client'
+import '../services/TranslationYup'
 import * as yup from 'yup'
 import Link from "next/link"
 import Swal from 'sweetalert2'

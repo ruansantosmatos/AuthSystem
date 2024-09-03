@@ -2,6 +2,7 @@
 import * as yup from 'yup'
 import Link from "next/link"
 import Swal from 'sweetalert2'
+import '../../services/TranslationYup'
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
