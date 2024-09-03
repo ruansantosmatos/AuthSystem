@@ -92,12 +92,11 @@ export default function Home() {
     try {
       disableEnableBtns(true)
       const request = await ServicesUsuarios.session({ 'email': email, 'senha': password }) as ISessionData
-      const token = request.session.token
+      const session = request.session
 
-      localStorage.setItem('token', token)
+      localStorage.setItem('session', JSON.stringify(session))
       setTimeout(() => { disableEnableBtns(false) }, 1500)
-      alert('Parabéns tu fez login filho de cabra safado')
-      // router.push('/')
+      router.push('/home')
 
     }
     catch (error) {
@@ -114,11 +113,11 @@ export default function Home() {
       const data = { 'id_conta': details.sub, 'nome': details.name, 'email': details.email }
 
       const request = await ServicesUsuarios.sessionOAuth(data) as ISessionData
-      const token = request.session.token
+      const session = request.session
 
-      localStorage.setItem('token', token)
+      localStorage.setItem('session', JSON.stringify(session))
       setTimeout(() => { disableEnableBtns(false) }, 1000)
-      router.push('/')
+      router.push('/home')
     }
     catch (error) {
       setTimeout(() => { disableEnableBtns(false) }, 1500)

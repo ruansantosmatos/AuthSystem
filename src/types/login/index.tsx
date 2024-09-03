@@ -21,3 +21,18 @@ export interface IOAuthGoogle {
     email: string,
 }
 
+export interface ISession {
+    id: number,
+    token: string
+}
+
+export interface IUser {
+    id: number,
+    nome: string,
+    email: string,
+    senha: string
+}
+
+export interface IUserData {
+    data: IUser[]
+}
