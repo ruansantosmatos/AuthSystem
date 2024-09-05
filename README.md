@@ -1,36 +1,87 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Sistema de Autenticação  
 
-## Getting Started
+## Visão Geral
 
-First, run the development server:
+O projeto tem como objetivo, recriar funcionalidades de autenticação do usuário atráves de crendiciais de acesso.
+Comumente utlizado em aplicações web, mobile, desktops, dentre outras. Como caratéricas principais da aplicação,
+pode ser detacado: Utilização do protocolo de segurança OAuth2, permitindo que os usuários façam login utilizando contas de terceiros, 
+como Google, Facebook, ou outros provedores de identidade, geração de token de acesso, criação de novas contas, redefinição de senha, 
+autenticação com código OTP, login e logout. Todas as funcionalidades supracitadas, são necessidades basilares para a indentificação de novas contas, 
+proteção da informação e controle de acesso nas aplicações.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+## Conceitos Aplicados no Projeto:
+
+- OAuth2
+- OTP
+- Login
+- Logout
+- Criptografia de informações
+- Redefinição/Recuperação de senha
+- Responsividade
+- UI/UX
+- Integração de API
+
+## Funcionalidades
+
+- Permite o usuário efetuar login.
+- Permite o usuário efetuar Logout
+- Permite a criação de uma novo perfil do usuário.
+- Redefinição/Recuperação de senha
+- Autenticação de conta utilizando-se código OTP
+
+## Tecnologias Utilizadas:
+
+- Next.Js
+- Typescript
+- Tailwind CSS
+- Sadcn UI
+- Yup
+- Axios
+- JWT
+
+## Requisitos
+
+Para visualizar e modificar o projeto, você precisará de:
+
+- Um navegador web moderno (Chrome, Firefox, Edge, etc.).
+- Um editor de texto ou IDE para edição de código (VSCode, Sublime Text, etc.).
+
+## Como Usar
+
+1. **Clone este repositório**:
+    ```bash
+    git clone https://github.com/ruansantosmatos/Side-Menu.git
+    ```
+
+2. **Abra o arquivo `index.html`**:
+    - Navegue até o diretório do projeto e abra o arquivo `index.html` em seu navegador.
+
+3. **Personalize o estilo**:
+    - Para modificar o design do menu, edite o arquivo `index.css` conforme necessário.
+
+4. **Personalizar ação**:
+    - Para modificar a ação de abertura, fechamento, dentre outras, edite o arquivo `index.js` conforme necessário.
+
+## Estrutura do Projeto
+
+```plaintext
+├── src
+    ├── assets
+        └── icons            # Arquivo contendo icones utilizados no projeto
+        └── images           # Arquivo contendo imagens utilizadas no projeto
+    ├── html
+        └── index.html       # Arquivo principal contendo a estrutura HTML do menu
+    ├── styles
+        └── index.css        # Arquivo de estilos CSS
+    ├──scripts
+        └── index.js         # Arquivo JavaScript que executa as ações do meu lateral
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Contribuições
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Contribuições são bem-vindas! Se você encontrar algum problema ou tiver ideias para melhorias, sinta-se à vontade para enviar um pull request.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Licença
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Este projeto está licenciado sob a Licença MIT.
