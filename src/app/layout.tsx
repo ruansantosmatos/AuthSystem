@@ -1,5 +1,6 @@
 import "../styles/globals.css"
 import type { Metadata } from 'next'
+import { Suspense } from 'react'
 import { cn } from "@/lib/utils"
 import { Inter as FontSans } from "next/font/google"
 
@@ -21,7 +22,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <link rel="icon" href="/favicon.ico" sizes="any" />
       </head>
       <body className={cn("min-h-screen bg-background font-sans antialiased", fontSans.variable)}>
-        {children}
+        <Suspense>
+          {children}
+        </Suspense>
       </body>
     </html>
   );

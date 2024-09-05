@@ -94,7 +94,7 @@ export default function Home() {
       const request = await ServicesUsuarios.session({ 'email': email, 'senha': password }) as ISessionData
       const session = request.session
 
-      localStorage.setItem('session', JSON.stringify(session))
+      window.localStorage.setItem('session', JSON.stringify(session))
       setTimeout(() => { disableEnableBtns(false) }, 1500)
       router.push('/home')
 
@@ -114,8 +114,8 @@ export default function Home() {
 
       const request = await ServicesUsuarios.sessionOAuth(data) as ISessionData
       const session = request.session
-
-      localStorage.setItem('session', JSON.stringify(session))
+      
+      window.localStorage.setItem('session', JSON.stringify(session))
       setTimeout(() => { disableEnableBtns(false) }, 1000)
       router.push('/home')
     }
