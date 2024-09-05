@@ -37,7 +37,7 @@ export default function StepOne() {
     }
 
     function AuthScreen() {
-        const message = 'Por questões de segurança, estamos redirecionando você!'
+        const message = 'O processo de redefinição de senha foi encerrado por questões de segurança, estamos redirecionando você!'
         if (id == undefined || token == undefined || id_user == undefined) { alert(message, () => redirectScreen('/')) }
         else { authToken() }
     }
