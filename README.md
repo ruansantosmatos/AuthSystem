@@ -1,13 +1,17 @@
 # Sistema de Autenticação  
 
+Software desenvolvido com o objetivo de recriar fluxos de segurança da informação, autenticação de credenciais, assim como,
+controle de acesso de novos usuários em aplicações. Funcionalidades de criação de conta, login, logout, dentre outras 
+seram apresentadas no projeto.
+
 ## Visão Geral
 
 O projeto tem como objetivo, recriar funcionalidades de autenticação do usuário atráves de crendiciais de acesso.
 Comumente utlizado em aplicações web, mobile, desktops, dentre outras. Como caratéricas principais da aplicação,
 pode ser detacado: Utilização do protocolo de segurança OAuth2, permitindo que os usuários façam login utilizando contas de terceiros, 
 como Google, Facebook, ou outros provedores de identidade, geração de token de acesso, criação de novas contas, redefinição de senha, 
-autenticação com código OTP, login e logout. Todas as funcionalidades supracitadas, são necessidades basilares para a indentificação de novas contas, 
-proteção da informação e controle de acesso nas aplicações.
+autenticação com código OTP, login e logout. Todas as caraterísticas supracitadas, são necessidades basilares para a identificação, 
+proteção de dados e controle de acesso.
 
 
 ## Conceitos Aplicados no Projeto:
@@ -25,7 +29,7 @@ proteção da informação e controle de acesso nas aplicações.
 ## Funcionalidades
 
 - Permite o usuário efetuar login.
-- Permite o usuário efetuar Logout
+- Permite o usuário efetuar logout
 - Permite a criação de uma novo perfil do usuário.
 - Redefinição/Recuperação de senha
 - Autenticação de conta utilizando-se código OTP
@@ -46,6 +50,8 @@ Para visualizar e modificar o projeto, você precisará de:
 
 - Um navegador web moderno (Chrome, Firefox, Edge, etc.).
 - Um editor de texto ou IDE para edição de código (VSCode, Sublime Text, etc.).
+- Node.js 18.18.
+- Sistema operacional MacOS, Windows ou Linux.
 
 ## Como Usar
 
