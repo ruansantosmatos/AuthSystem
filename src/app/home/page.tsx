@@ -22,11 +22,11 @@ export default function Home() {
 
     const [user, setUser] = useState<string>('')
     const route = useRouter()
-    const data = JSON.parse(localStorage.getItem('session') as string) as ISession
 
     useEffect(() => { AuthScreen() }, [])
 
     function AuthScreen() {
+        const data = JSON.parse(localStorage.getItem('session') as string) as ISession
         if (data == null || data == undefined) {
             const message = 'É necessário efetuar login para continuar'
             Swal.fire({ icon: 'warning', title: 'Atenção', text: `${message}`, didClose: () => { route.push('/') } })
@@ -38,8 +38,10 @@ export default function Home() {
 
     async function getUser() {
         try {
+            const data = JSON.parse(localStorage.getItem('session') as string) as ISession
             const id = data.id
             const token = data.token
+            
             const request = await ServicesUsuarios.getById(id, token) as IUserData
             const name = request.data[0].nome.split(' ')[0]
             setUser(name)
@@ -98,7 +100,7 @@ export default function Home() {
                             </p>
                         </div>
                         <div className="w-full h-20 flex flex-col justify-end items-center">
-                            <Button id='btn-redirect' onClick={() => console.log('teste')} className="w-3/4 text-white">
+                            <Button id='btn-redirect' onClick={() => route.push('https://github.com/ruansantosmatos')} className="w-3/4 text-white">
                                 Acessar Github
                             </Button>
                         </div>
