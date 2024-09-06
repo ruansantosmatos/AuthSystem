@@ -105,6 +105,8 @@ Para visualizar e modificar o projeto, você precisará de:
 ### Login/Logout
 https://github.com/user-attachments/assets/0ae13b46-1598-4ab3-987f-f368d5ceb6f4
 
+### Criação de Conta
+https://github.com/user-attachments/assets/c0d11adc-ef6d-4316-a2e9-1aa3f704dd8c
 
 ## Contribuições
 Contribuições são bem-vindas! Se você encontrar algum problema ou tiver ideias para melhorias, sinta-se à vontade para enviar um pull request.
