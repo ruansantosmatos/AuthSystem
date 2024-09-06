@@ -103,10 +103,7 @@ Para visualizar e modificar o projeto, você precisará de:
 ## Demonstração das Funcionalidades
 
 ### Login/Logout
-
-<video width="320" height="240" controls>
-  <source src="./demo/login.mp4" type="video/mp4">
-</video>
+https://github.com/user-attachments/assets/0ae13b46-1598-4ab3-987f-f368d5ceb6f4
 
 
 ## Contribuições
