@@ -108,9 +108,11 @@ https://github.com/user-attachments/assets/0ae13b46-1598-4ab3-987f-f368d5ceb6f4
 ### Criação de Conta
 https://github.com/user-attachments/assets/c0d11adc-ef6d-4316-a2e9-1aa3f704dd8c
 
+### Redefinição de Senha
+https://github.com/user-attachments/assets/8fbe26b1-b185-4fd7-bc12-f1c55986730b
+
 ## Contribuições
 Contribuições são bem-vindas! Se você encontrar algum problema ou tiver ideias para melhorias, sinta-se à vontade para enviar um pull request.
 
 ## Licença
-
 Este projeto está licenciado sob a Licença MIT.
