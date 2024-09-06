@@ -3,14 +3,15 @@ import * as yup from 'yup'
 import '../../services/TranslationYup'
 import Swal from 'sweetalert2'
 import 'sweetalert2/src/sweetalert2.scss'
-import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp"
 import { Button } from "@/components/ui/button"
 import { useEffect, useState } from "react"
 import { IResponseUser } from "@/types/sing-up"
-import { IOtpFields } from '@/types/otp'
+import { IDataContasOTP, IOtpFields } from '@/types/otp'
 import { ServicesOtp } from '@/api/otp'
 import { useRouter } from 'next/navigation'
 import { ServicesUsuarios } from '@/api/usuarios'
+import { ServicesContas } from '@/api/contas'
+import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp"
 
 export default function Otp() {
     const [id, setId] = useState<number>(0)
@@ -24,7 +25,7 @@ export default function Otp() {
     let acessToken = ''
 
     useEffect(() => {
-        load()
+        AuthScreen()
         startTimer(1)
 
         const btn_resend = document.getElementById('btn-resend')
@@ -33,12 +34,36 @@ export default function Otp() {
     }, [])
 
 
+    async function AuthScreen() {
+        try {
+            const message = 'O processo de validação de código OTP foi encerrado.'
+            const data_user = JSON.parse(sessionStorage.getItem('data_user') as string)
+
+            const token = sessionStorage.getItem('token') as string
+            const decriptData = await ServicesUsuarios.decrypt({ 'data': data_user }, token.replace(/"/g, '')) as IResponseUser
+            const id_user = decriptData.data.id
+
+            if (data_user == undefined || data_user == null) {
+                Swal.fire({ icon: 'warning', text: `${message}`, didClose: () => { route.push('/') } })
+            }
+            else {
+                const messageWarning = 'Sua conta já foi autenticada! Você sera redirecionado para efetuar login.'
+                const request = await ServicesContas.getById(id_user, token) as IDataContasOTP
+                if (request.data.length > 0) { load() }
+                else { Swal.fire({ icon: 'warning', text: `${messageWarning}`, didClose: () => { route.push('/') } }) }
+            }
+        }
+        catch (error) {
+            const message = 'Houve uma falha no carregamento das informações.'
+            Swal.fire({ icon: 'error', title: 'Atenção!', text: message, didClose: () => redirectScreen() })
+        }
+    }
+
     async function load() {
         try {
             const data_user = JSON.parse(sessionStorage.getItem('data_user') as string)
             const token = sessionStorage.getItem('token') as string
             const decriptData = await ServicesUsuarios.decrypt({ 'data': data_user }, token.replace(/"/g, '')) as IResponseUser
-            sessionStorage.removeItem('token')
 
             setId(decriptData.data.id)
             setIdOtp(decriptData.data.id_otp)
@@ -50,7 +75,7 @@ export default function Otp() {
         }
         catch (error) {
             const message = 'Houve uma falha no carregamento das informações.'
-            Swal.fire({ icon: 'success', title: 'Atenção!', text: message, didClose: () => redirectScreen() })
+            Swal.fire({ icon: 'error', title: 'Atenção!', text: message, didClose: () => redirectScreen() })
         }
     }
 
