@@ -1,7 +1,7 @@
 # Sistema de Autenticação  
 
 Software desenvolvido com o objetivo de recriar fluxos de segurança da informação, autenticação de credenciais, assim como,
-controle de acesso de novos usuários em aplicações. Funcionalidades de criação de conta, login, logout, dentre outras 
+controle de acesso de novos usuários em aplicações. Funcionalidades de criação de conta, login, logout, dentre outras, 
 seram apresentadas no projeto.
 
 ## Visão Geral
@@ -12,7 +12,6 @@ pode ser detacado: Utilização do protocolo de segurança OAuth2, permitindo qu
 como Google, Facebook, ou outros provedores de identidade, geração de token de acesso, criação de novas contas, redefinição de senha, 
 autenticação com código OTP, login e logout. Todas as caraterísticas supracitadas, são necessidades basilares para a identificação, 
 proteção de dados e controle de acesso.
-
 
 ## Conceitos Aplicados no Projeto:
 
@@ -50,38 +49,50 @@ Para visualizar e modificar o projeto, você precisará de:
 
 - Um navegador web moderno (Chrome, Firefox, Edge, etc.).
 - Um editor de texto ou IDE para edição de código (VSCode, Sublime Text, etc.).
-- Node.js 18.18.
 - Sistema operacional MacOS, Windows ou Linux.
+- Node.js 18.18 ou maior.
 
 ## Como Usar
 
-1. **Clone este repositório**:
+1. **Inicie um projeto Next**:
     ```bash
-    git clone https://github.com/ruansantosmatos/Side-Menu.git
+    npx create-next-app@latest <NameApp>
     ```
 
-2. **Abra o arquivo `index.html`**:
-    - Navegue até o diretório do projeto e abra o arquivo `index.html` em seu navegador.
+2. **Clone este repositório**:
+    ```bash
+    git clone https://github.com/ruansantosmatos/AuthSystem.git
+    ```
 
-3. **Personalize o estilo**:
-    - Para modificar o design do menu, edite o arquivo `index.css` conforme necessário.
+3. **Inicie o prompt de comando no diretório do projeto e execute**:
+    ```bash
+    npm run dev
+    ```
 
-4. **Personalizar ação**:
-    - Para modificar a ação de abertura, fechamento, dentre outras, edite o arquivo `index.js` conforme necessário.
+4. **Personalize o estilo**:
+    - Para aplicar modificações de estilo global, edite o arquivo `styles/globals.css` conforme necessário.
+    Nas modificações de componentes, páginas, dentre outros, torna-se necessário a utilização do Tailwind CSS
 
 ## Estrutura do Projeto
 
 ```plaintext
+├── public                   # Diretório que possui utilitários gerais (icones, imagens, dentre outros).
+
 ├── src
-    ├── assets
-        └── icons            # Arquivo contendo icones utilizados no projeto
-        └── images           # Arquivo contendo imagens utilizadas no projeto
-    ├── html
-        └── index.html       # Arquivo principal contendo a estrutura HTML do menu
-    ├── styles
-        └── index.css        # Arquivo de estilos CSS
-    ├──scripts
-        └── index.js         # Arquivo JavaScript que executa as ações do meu lateral
+    ├── api                  # Diretório responsável por definir os endpoints da API para consumo.
+        └── config           # Arquivo contendo as configurações da API.
+        └── models           # Tipagem estrutural das entendidades da base de dados.
+    
+    ├── app                  # Diretório principal contendo todas as rotas e páginas da aplicação.
+    
+    ├── components           # Diretório contendo componentes globais e de bibliotecas.
+        └── ui               # Diretório gerado para componentes tailwind CSS da biblioteca Sadcn UI.
+    ├── lib                  # Diretório que possui componente base para a utilização do Sadcn UI.
+    
+    ├── services             # Diretório responsável por conter funções que podem ser utilizadas de maneiras gerais.
+    
+    ├── styles               # Diretório que possui os arquivos de estilos gerais da aplicação.
+
 ```
 
 ## Contribuições
