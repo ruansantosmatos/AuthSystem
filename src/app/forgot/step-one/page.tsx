@@ -1,12 +1,13 @@
 'use client'
 import Swal from 'sweetalert2'
+import Image from 'next/image'
+import imgSecury from '../../../../public/security.png'
 import { ServicesSenhas } from "@/api/senhas"
 import { useSearchParams } from "next/navigation"
 import { useEffect } from "react"
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
-import Image from 'next/image'
-import imgSecury from '../../../../public/security.png'
+import { IDataToken } from '@/types/step-one'
 
 export default function StepOne() {
     const route = useRouter()
@@ -28,7 +29,13 @@ export default function StepOne() {
 
     async function authToken() {
         try {
-            await ServicesSenhas.update({ 'id': id }, token)
+            const message = 'Crendenciais expiradas para continuar com o processo de redefinição de senha.'
+            const tokenValidate = token
+            const verifyToken = await ServicesSenhas.getByToken(tokenValidate) as IDataToken
+
+            verifyToken.data[0].valido ?
+            await ServicesSenhas.update({ 'id': id }, token) :
+            Swal.fire({ icon: 'warning', text: `${message}`, didClose: () => { redirectScreen('/') } })
         }
         catch (error) {
             const message = 'Houve uma falha no processo de autenticação..'
