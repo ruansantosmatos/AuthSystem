@@ -69,7 +69,12 @@ Para visualizar e modificar o projeto, você precisará de:
     npm run dev
     ```
 
-4. **Personalize o estilo**:
+4. **API AuthSystem**:
+    - Torna-se necessário a utilização da API backend, desenvolvida para garantir a interação
+    com o cliente, assim como maninupulação das informações e interações da aplicação. Para mais detalhes
+    a cerca da documentação e endpoints, acesse:
+
+5. **Personalize o estilo**:
     - Para aplicar modificações de estilo global, edite o arquivo `styles/globals.css` conforme necessário.
     Nas modificações de componentes, páginas, dentre outros, torna-se necessário a utilização do Tailwind CSS
 
@@ -95,8 +100,16 @@ Para visualizar e modificar o projeto, você precisará de:
 
 ```
 
-## Contribuições
+## Demonstração das Funcionalidades
 
+### Login/Logout
+
+<video width="320" height="240" controls>
+  <source src="./demo/login.mp4" type="video/mp4">
+</video>
+
+
+## Contribuições
 Contribuições são bem-vindas! Se você encontrar algum problema ou tiver ideias para melhorias, sinta-se à vontade para enviar um pull request.
 
 ## Licença

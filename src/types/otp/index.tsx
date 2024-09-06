@@ -13,3 +13,7 @@ export interface IOtpFields {
 export interface IDataContasOTP {
     data: IContas[]
 }
+
+export interface IContasAutenticada {
+    response: string
+}

@@ -6,7 +6,7 @@ import 'sweetalert2/src/sweetalert2.scss'
 import { Button } from "@/components/ui/button"
 import { useEffect, useState } from "react"
 import { IResponseUser } from "@/types/sing-up"
-import { IDataContasOTP, IOtpFields } from '@/types/otp'
+import { IContasAutenticada, IDataContasOTP, IOtpFields } from '@/types/otp'
 import { ServicesOtp } from '@/api/otp'
 import { useRouter } from 'next/navigation'
 import { ServicesUsuarios } from '@/api/usuarios'
@@ -26,7 +26,6 @@ export default function Otp() {
 
     useEffect(() => {
         AuthScreen()
-        startTimer(1)
 
         const btn_resend = document.getElementById('btn-resend')
         if (btn_resend == undefined) { return }
@@ -48,8 +47,10 @@ export default function Otp() {
             }
             else {
                 const messageWarning = 'Sua conta já foi autenticada! Você sera redirecionado para efetuar login.'
-                const request = await ServicesContas.getById(id_user, token) as IDataContasOTP
-                if (request.data.length > 0) { load() }
+                const request = await ServicesContas.getById(id_user, token.replace(/"/g, '')) as IDataContasOTP
+                console.log('Request', request)
+
+                if (request.data.length == 0) { load() }
                 else { Swal.fire({ icon: 'warning', text: `${messageWarning}`, didClose: () => { route.push('/') } }) }
             }
         }
@@ -65,6 +66,7 @@ export default function Otp() {
             const token = sessionStorage.getItem('token') as string
             const decriptData = await ServicesUsuarios.decrypt({ 'data': data_user }, token.replace(/"/g, '')) as IResponseUser
 
+            startTimer(1)
             setId(decriptData.data.id)
             setIdOtp(decriptData.data.id_otp)
             setEmail(decriptData.data.email)

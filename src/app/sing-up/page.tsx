@@ -146,7 +146,7 @@ export default function SingUp() {
         }
         catch (error) {
             const message = error as { response: string }
-            Swal.fire({ icon: 'error', title: 'Atenção', text: `${message.response}` })
+            Swal.fire({ icon: 'warning', title: 'Atenção', text: `${message.response}` })
             setTimeout(() => { disableEnableBtns(false) }, 1200)
         }
     }
@@ -170,7 +170,7 @@ export default function SingUp() {
         catch (error) {
             const message = error as { response: string }
             setTimeout(() => { disableEnableBtns(false) }, 1500)
-            Swal.fire({ icon: 'error', title: 'Atenção', text: `${message.response}` })
+            Swal.fire({ icon: 'warning', title: 'Atenção', text: `${message.response}` })
         }
     }
 
