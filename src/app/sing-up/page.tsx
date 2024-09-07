@@ -106,11 +106,11 @@ export default function SingUp() {
 
                 switch (erro.path) {
                     case fieldSingUp.firstName:
-                        alertInvalidFields(`first name too short`, 'block', 'name')
+                        alertInvalidFields(erro.message, 'block', 'name')
                         break;
 
                     case fieldSingUp.lastName:
-                        alertInvalidFields('last name too short', 'block', 'name')
+                        alertInvalidFields(erro.message, 'block', 'name')
                         break;
 
                     case fieldSingUp.email:
