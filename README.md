@@ -112,6 +112,7 @@ https://github.com/user-attachments/assets/c0d11adc-ef6d-4316-a2e9-1aa3f704dd8c
 https://github.com/user-attachments/assets/8fbe26b1-b185-4fd7-bc12-f1c55986730b
 
 ### Código OTP
+https://github.com/user-attachments/assets/c2c53b74-b0e2-4348-bccd-74d8868db29b
 
 ## Contribuições
 Contribuições são bem-vindas! Se você encontrar algum problema ou tiver ideias para melhorias, sinta-se à vontade para enviar um pull request.
