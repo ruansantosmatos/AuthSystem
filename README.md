@@ -21,9 +21,9 @@ proteção de dados e controle de acesso.
 - Logout
 - Criptografia de informações
 - Redefinição/Recuperação de senha
+- Integração de API
 - Responsividade
 - UI/UX
-- Integração de API
 
 ## Funcionalidades
 
@@ -35,7 +35,7 @@ proteção de dados e controle de acesso.
 
 ## Tecnologias Utilizadas:
 
-- Next.Js
+- NextJs
 - Typescript
 - Tailwind CSS
 - Sadcn UI
@@ -72,7 +72,7 @@ Para visualizar e modificar o projeto, você precisará de:
 4. **API AuthSystem**:
     - Torna-se necessário a utilização da API backend, desenvolvida para garantir a interação
     com o cliente, assim como maninupulação das informações e interações da aplicação. Para mais detalhes
-    a cerca da documentação e endpoints, acesse:
+    a cerca da documentação e endpoints acesse: 
 
 5. **Personalize o estilo**:
     - Para aplicar modificações de estilo global, edite o arquivo `styles/globals.css` conforme necessário.
@@ -114,8 +114,15 @@ https://github.com/user-attachments/assets/8fbe26b1-b185-4fd7-bc12-f1c55986730b
 ### Código OTP
 https://github.com/user-attachments/assets/c2c53b74-b0e2-4348-bccd-74d8868db29b
 
+## Observações
+
+1. Para executar o processo de login com a conta google, torna-se necessário a utilização do 
+código das crendenciais de acesso para a aplicação, consulte a documentação oficial:
+[Google Identity](https://developers.google.com/identity/protocols/oauth2?hl=pt-br)
+
 ## Contribuições
-Contribuições são bem-vindas! Se você encontrar algum problema ou tiver ideias para melhorias, sinta-se à vontade para enviar um pull request.
+Contribuições são bem-vindas! Se você encontrar algum problema ou tiver ideias para melhorias, 
+sinta-se à vontade para enviar um pull request.
 
 ## Licença
 Este projeto está licenciado sob a Licença MIT.
