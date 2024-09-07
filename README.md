@@ -71,7 +71,7 @@ Para visualizar e modificar o projeto, você precisará de:
 
 4. **API AuthSystem**:
     - Torna-se necessário a utilização da API backend, desenvolvida para garantir a interação
-    com o cliente, assim como maninupulação das informações e interações da aplicação. Para mais detalhes
+    com o cliente, assim como manipulação das informações e interações da aplicação. Para mais detalhes
     a cerca da documentação e endpoints acesse: 
 
 5. **Personalize o estilo**:
